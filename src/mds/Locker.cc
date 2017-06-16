@@ -450,9 +450,9 @@ bool Locker::acquire_locks(MDRequestRef& mdr,
     if (existing != mdr->locks.end() && *existing == *p) {
       // right kind?
       SimpleLock *have = *existing;
-      ++existing;
       if (xlocks.count(have) && mdr->xlocks.count(have)) {
 	dout(10) << " already xlocked " << *have << " " << *have->get_parent() << dendl;
+	++existing;
 	continue;
       }
       if (mdr->remote_wrlocks.count(have)) {
@@ -470,16 +470,17 @@ bool Locker::acquire_locks(MDRequestRef& mdr,
 	    dout(10) << " already wrlocked " << *have << " " << *have->get_parent() << dendl;
 	  if (need_remote_wrlock)
 	    dout(10) << " already remote_wrlocked " << *have << " " << *have->get_parent() << dendl;
+	  ++existing;
 	  continue;
 	}
       }
       if (rdlocks.count(have) && mdr->rdlocks.count(have)) {
 	dout(10) << " already rdlocked " << *have << " " << *have->get_parent() << dendl;
+	++existing;
 	continue;
       }
     }
     
-    // hose any stray locks
     if (existing != mdr->locks.end() && *existing == *p) {
       assert(need_wrlock || need_remote_wrlock);
       SimpleLock *lock = *existing;
@@ -495,6 +496,8 @@ bool Locker::acquire_locks(MDRequestRef& mdr,
       }
       ++existing;
     }
+
+    // hose any stray locks
     while (existing != mdr->locks.end()) {
       SimpleLock *stray = *existing;
       ++existing;
