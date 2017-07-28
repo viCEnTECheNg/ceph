@@ -1780,8 +1780,7 @@ public:
 
       typedef boost::mpl::list <
 	boost::statechart::custom_reaction< ActMap >,
-	boost::statechart::custom_reaction< MNotifyRec >,
-	boost::statechart::transition< NeedActingChange, WaitActingChange >
+	boost::statechart::custom_reaction< MNotifyRec >
 	> reactions;
       boost::statechart::result react(const ActMap&);
       boost::statechart::result react(const MNotifyRec&);
@@ -1818,7 +1817,8 @@ public:
       typedef boost::mpl::list <
 	boost::statechart::custom_reaction< QueryState >,
 	boost::statechart::transition< Activate, Active >,
-	boost::statechart::custom_reaction< AdvMap >
+	boost::statechart::custom_reaction< AdvMap >,
+	boost::statechart::transition< NeedActingChange, WaitActingChange >
 	> reactions;
       boost::statechart::result react(const QueryState& q);
       boost::statechart::result react(const AdvMap &advmap);
