@@ -1300,6 +1300,7 @@ OPTION(journal_ignore_corruption, OPT_BOOL) // assume journal is not corrupt
 OPTION(journal_discard, OPT_BOOL) //using ssd disk as journal, whether support discard nouse journal-data.
 
 OPTION(fio_dir, OPT_STR) // fio data directory for fio-objectstore
+OPTION(fio_dump_perf, OPT_BOOL) // dump perf counter after benchmark with fio-objectstore
 
 OPTION(rados_mon_op_timeout, OPT_DOUBLE) // how many seconds to wait for a response from the monitor before returning an error from a rados operation. 0 means no limit.
 OPTION(rados_osd_op_timeout, OPT_DOUBLE) // how many seconds to wait for a response from osds before returning an error from a rados operation. 0 means no limit.

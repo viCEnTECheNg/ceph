@@ -87,9 +87,11 @@ struct Engine {
     if (!ref_count) {
       ostringstream ostr;
       Formatter* f = Formatter::create("json-pretty", "json-pretty", "json-pretty");
-      cct->get_perfcounters_collection()->dump_formatted(f, false);
-      ostr << "FIO plugin ";
-      f->flush(ostr);
+      if (g_conf->fio_dump_perf) {
+        cct->get_perfcounters_collection()->dump_formatted(f, false);
+        ostr << "FIO plugin ";
+        f->flush(ostr);
+      }
       if (g_conf->rocksdb_perf) {
         os->get_db_statistics(f);
         ostr << "FIO get_db_statistics ";
@@ -97,7 +99,8 @@ struct Engine {
       }
       delete f;
       os->umount();
-      dout(0) <<  ostr.str() << dendl;
+      if (!ostr.str().empty())
+        dout(0) <<  ostr.str() << dendl;
     }
   }
 };
