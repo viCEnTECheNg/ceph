@@ -497,8 +497,8 @@ class IscsiTestController(ControllerTestCase, KVStoreMockMixin):
         for client in response['clients']:
             client['info'] = client_info
         update_response = {
-            'detail': "Client 'iqn.1994-05.com.redhat:rh7-client' cannot be deleted until it's "
-                      "logged out",
+            'detail': "Client '{}' cannot be deleted until it's logged out"
+                      .format(client['client_iqn']),
             'code': 'client_logged_in',
             'component': 'iscsi'
         }
